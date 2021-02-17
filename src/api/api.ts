@@ -12,8 +12,16 @@ export const carsApi = {
     return instance.get<ResCarsType>(`/api/car`);
   },
   addCar(brand: string, carNumber: string, engineType: string, model: string) {
-    return  instance.post<ResCarType>('/api/car', {brand: brand, carNumber: carNumber, engineType: engineType, model: model});
+    return instance.post<ResCarType>(`/api/car`, {
+      brand: brand,
+      carNumber: carNumber,
+      engineType: engineType,
+      model: model
+    });
   },
+  deleteCar(carId: number) {
+    return instance.delete(`/api/car/${carId}`)
+  }
 }
 
 // types

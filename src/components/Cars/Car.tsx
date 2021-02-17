@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import {CarType} from "../../api/api";
 import {IconButton} from '@material-ui/core';
 import {Delete} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import {deleteCarTC} from "../../redux/cars-reducer";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -131,11 +133,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type PropType = {
   cars: Array<CarType>
+  // deleteCar: (carId: number) => void
 }
 
 export default function Car(props: PropType) {
 
   const rows = props.cars;
+  const dispatch = useDispatch();
+
 
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
@@ -160,6 +165,12 @@ export default function Car(props: PropType) {
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+  const [count, setCount] = useState(1);
+  const deleteCar = useCallback((carId: number) => {
+      dispatch(deleteCarTC(carId))
+    setCount(count + 1)
+  },[dispatch, count] )
 
   return (
     <div className={classes.root}>
@@ -196,8 +207,8 @@ export default function Car(props: PropType) {
                       <TableCell align="right">{row.carNumber}</TableCell>
                       <TableCell align="right">{row.engineType}</TableCell>
                       <TableCell align="right">{row.model}
-                        <IconButton onClick={() => alert(row.id)}>
-                          <Delete/>
+                        <IconButton >
+                          <div onClick={ () => deleteCar(row.id)}><Delete/></div>
                         </IconButton>
                       </TableCell>
                     </TableRow>

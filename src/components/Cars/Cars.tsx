@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import MyInput from "../Input/Input";
 import {Button} from "@material-ui/core";
 import {useDispatch} from "react-redux";
-import {addCarTC} from "../../redux/cars-reducer";
+import {addCarTC, deleteCarTC} from "../../redux/cars-reducer";
 import Car from "./Car";
 import {CarType} from "../../api/api";
 
@@ -19,9 +19,13 @@ export const Cars = React.memo((props: PropType) => {
 
   const dispatch = useDispatch();
 
-  const onClick = useCallback( () => {
+  const onClick = useCallback(() => {
     dispatch(addCarTC(brand, carNumber, engineType, model))
-  },[brand, carNumber, engineType, model])
+  }, [dispatch, brand, carNumber, engineType, model])
+
+  const deleteCar = useCallback((carId: number) => {
+    dispatch(deleteCarTC(carId))
+  },[dispatch] )
 
   return (
     <div>
@@ -35,7 +39,7 @@ export const Cars = React.memo((props: PropType) => {
         Add
       </Button>
       <div>
-        <Car cars={props.cars} />
+        <Car cars={props.cars}/>
       </div>
     </div>
   );
