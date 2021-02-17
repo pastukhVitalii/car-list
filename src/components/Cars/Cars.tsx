@@ -3,8 +3,14 @@ import MyInput from "../Input/Input";
 import {Button} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import {addCarTC} from "../../redux/cars-reducer";
+import Car from "./Car";
+import {CarType} from "../../api/api";
 
-export const Cars = React.memo(() => {
+type PropType = {
+  cars: Array<CarType>
+}
+
+export const Cars = React.memo((props: PropType) => {
 
   const [brand, setBrand] = useState<string>('');
   const [carNumber, setCarNumber] = useState<string>('');
@@ -15,7 +21,6 @@ export const Cars = React.memo(() => {
 
   const onClick = useCallback( () => {
     dispatch(addCarTC(brand, carNumber, engineType, model))
-    // alert(brand) //, carNumber, engineType, model
   },[brand, carNumber, engineType, model])
 
   return (
@@ -29,6 +34,9 @@ export const Cars = React.memo(() => {
       <Button variant="contained" color="primary" onClick={onClick}>
         Add
       </Button>
+      <div>
+        <Car cars={props.cars} />
+      </div>
     </div>
   );
 });

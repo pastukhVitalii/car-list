@@ -17,7 +17,7 @@ function App() {
   console.log(cars);
   return (
     <div className="App">
-    <Cars/>
+    <Cars cars={cars}/>
     </div>
   );
 }

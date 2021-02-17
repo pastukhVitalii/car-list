@@ -29,6 +29,6 @@ export type CarType = {
   id: number
   carNumber: string
   model: string
-  brand: 'FUEL' | 'GAS' | 'HYBRID'
-  engineType: string
+  brand: string
+  engineType: 'FUEL' | 'GAS' | 'HYBRID'
 }
