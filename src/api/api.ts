@@ -11,12 +11,15 @@ export const carsApi = {
   getCars() {
     return instance.get<ResCarsType>(`/api/car`);
   },
+  addCar(brand: string, carNumber: string, engineType: string, model: string) {
+    return  instance.post<ResCarType>('/api/car', {brand: brand, carNumber: carNumber, engineType: engineType, model: model});
+  },
 }
 
 // types
-/*export type ResponseCarsType = {
-  cars: Array<CarType>
-}*/
+export type ResCarType = {
+  car: CarType
+}
 
 export type ResCarsType = {
   cars: Array<CarType>
@@ -26,6 +29,6 @@ export type CarType = {
   id: number
   carNumber: string
   model: string
-  brand: string
+  brand: 'FUEL' | 'GAS' | 'HYBRID'
   engineType: string
 }

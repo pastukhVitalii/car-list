@@ -4,6 +4,7 @@ import {CarType} from "./api/api";
 import {AppStateType} from "./redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import {setCarsTC} from "./redux/cars-reducer";
+import {Cars} from "./components/Cars/Cars";
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
   console.log(cars);
   return (
     <div className="App">
-
+    <Cars/>
     </div>
   );
 }

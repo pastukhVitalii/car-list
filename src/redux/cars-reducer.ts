@@ -1,17 +1,23 @@
 import {Dispatch} from 'redux'
 import {carsApi, CarType, ResCarsType} from "../api/api";
 
-const initialState: ResCarsType = {
-  cars: [],
+type initialStateType = {
+  cars: Array<CarType>
 }
 
-export const carsReducer = (state: ResCarsType = initialState, action: ActionsType): ResCarsType => {
+const initialState: initialStateType = {
+  cars: []
+}
+
+export const carsReducer = (state: ResCarsType = initialState, action: ActionsType): initialStateType => {
   switch (action.type) {
     case "SET-CARS":
       return {
         ...state,
         cars: action.cars
       }
+    case 'ADD-CAR':
+      return {...state, cars: [action.car, ...state.cars]}
     default:
       return state
   }
@@ -19,7 +25,8 @@ export const carsReducer = (state: ResCarsType = initialState, action: ActionsTy
 
 // actions
 
-export const setCarsAC = (cars: Array<CarType>) => ({type: 'SET-CARS', cars: cars} as const)
+export const setCarsAC = (cars: Array<CarType>) => ({type: 'SET-CARS', cars: cars} as const);
+export const addCarAC = (car: CarType) => ({type: 'ADD-CAR', car} as const);
 
 // thunks
 
@@ -27,7 +34,6 @@ export const setCarsTC = () => {
   return (dispatch: ThunkDispatch) => {
     carsApi.getCars()
       .then((res) => {
-        debugger
         dispatch(setCarsAC(res.data.cars))
       })
       .catch(error => {
@@ -35,9 +41,23 @@ export const setCarsTC = () => {
       })
   }
 }
+
+export const addCarTC = (brand: string, carNumber: string, engineType: string, model: string) => {
+  return (dispatch: ThunkDispatch) => {
+    carsApi.addCar(brand, carNumber, engineType, model)
+      .then((res) => {
+        dispatch(addCarAC(res.data.car))
+      })
+      .catch(error => {
+        console.log(error, dispatch);
+      })
+  }
+}
+
 // types
 
 export type SetCarsActionType = ReturnType<typeof setCarsAC>;
-type ActionsType = SetCarsActionType
+export type AddCarActionType = ReturnType<typeof addCarAC>;
+type ActionsType = SetCarsActionType | AddCarActionType;
 
 type ThunkDispatch = Dispatch<ActionsType>
