@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
+import {CarType} from "./api/api";
+import {AppStateType} from "./redux/store";
+import {useDispatch, useSelector} from "react-redux";
+import {setCarsTC} from "./redux/cars-reducer";
 
 function App() {
+
+  const cars = useSelector<AppStateType, Array<CarType>>(state=> state.cars.cars);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setCarsTC());
+  }, [dispatch]);
+
+  console.log(cars);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
     </div>
   );
 }
