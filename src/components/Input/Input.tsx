@@ -21,7 +21,7 @@ export default function MyInput(props: PropsType) {
 
   const onChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.currentTarget.value;
-    if (value.trim() != '') {
+    if (value.trim() !== '') {
       props.setValue(value);
       console.log(value);
     } else {
