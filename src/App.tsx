@@ -7,6 +7,8 @@ import {setCarsTC} from "./redux/cars-reducer";
 import {Cars} from "./components/Cars/Cars";
 import MyButton from "./components/Button/Button";
 import MyModal from "./components/Modal/Modal";
+import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
 
 function App() {
 
@@ -24,7 +26,17 @@ function App() {
   console.log(cars);
   return (
     <div className="App">
-      <MyButton label={'Add car'} onClick={handleOpen}/>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon/>
+          </IconButton>
+          <Typography variant="h6">
+            Cars
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <MyButton label={'Add car'} onClick={handleOpen} disabled={false}/>
       <MyModal open={open} setOpen={setOpen}/>
       <Cars cars={cars}/>
     </div>

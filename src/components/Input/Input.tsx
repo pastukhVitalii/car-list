@@ -5,8 +5,8 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
-        margin: 10,
-        minWidth: 222,
+      margin: 10,
+      minWidth: 222,
     },
   }),
 );
@@ -23,14 +23,15 @@ export default function MyInput(props: PropsType) {
     const value = event.currentTarget.value;
     if (value.trim() !== '') {
       props.setValue(value);
-      console.log(value);
+      props.setError(null);
     } else {
       props.setError("Title is required");
     }
   }
 
   return (
-      <TextField className={classes.formControl} id="outlined-basic" label={props.label} variant="outlined" onChange={onChange} autoComplete='on'
-                 helperText={props.error}/>
+    <TextField className={classes.formControl} id="outlined-basic" label={props.label} variant="outlined"
+               onChange={onChange}
+               helperText={props.error}/>
   );
 }

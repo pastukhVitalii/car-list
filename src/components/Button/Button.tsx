@@ -14,13 +14,16 @@ const useStyles = makeStyles((theme: Theme) =>
 type PropsType = {
   label: string
   onClick: () => void
+  disabled: boolean
 }
 export default function MyButton(props: PropsType) {
+
   const classes = useStyles();
+  console.log(props.disabled);
 
   return (
     <div className={classes.root} >
-      <Button variant="contained" color="primary" onClick={props.onClick}>
+      <Button variant="contained" color="primary" onClick={props.onClick} disabled={props.disabled}>
         {props.label}
       </Button>
     </div>

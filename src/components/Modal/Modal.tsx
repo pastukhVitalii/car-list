@@ -52,7 +52,7 @@ export default function MyModal(props: PropsType) {
   let [error, setError] = useState<string | null>(null)
 
   const addCar = useCallback(() => {
-    dispatch(addCarTC(brand, carNumber, engineType, model))
+    dispatch(addCarTC(brand, carNumber, engineType, model));
   }, [dispatch, brand, carNumber, engineType, model])
 
   return (
@@ -86,8 +86,8 @@ export default function MyModal(props: PropsType) {
               <MyInput label={'Model'} setValue={setModel} setError={setError} error={error}/>
             </Grid>
             <Grid container justify={"flex-end"} direction={"row"} wrap={"wrap"}>
-              <MyButton label={'cancel'} onClick={handleClose}/>
-              <MyButton label={'ok'} onClick={addCar}/>
+              <MyButton label={'cancel'} onClick={handleClose} disabled={false}/>
+              <MyButton label={'ok'} onClick={addCar} disabled={!brand && !carNumber && !engineType && !model}/>
             </Grid>
           </div>
         </Fade>

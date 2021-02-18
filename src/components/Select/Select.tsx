@@ -40,6 +40,7 @@ export const MySelect = React.memo(function (props: PropsType) {
           value={statusApi}
           onChange={handleChange}
           label={props.label}
+          required
         >
           <MenuItem value="">
             <em>None</em>
