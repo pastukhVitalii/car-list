@@ -38,5 +38,5 @@ export type CarType = {
   carNumber: string
   model: string
   brand: string
-  engineType: 'FUEL' | 'GAS' | 'HYBRID'
+  engineType: string
 }

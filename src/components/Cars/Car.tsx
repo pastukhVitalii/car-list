@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type PropType = {
   cars: Array<CarType>
-  // deleteCar: (carId: number) => void
+  deleteCar: (carId: number) => void
 }
 
 export default function Car(props: PropType) {
@@ -166,11 +166,12 @@ export default function Car(props: PropType) {
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-  const [count, setCount] = useState(1);
-  const deleteCar = useCallback((carId: number) => {
-      dispatch(deleteCarTC(carId))
-    setCount(count + 1)
-  },[dispatch, count] )
+  // const [count, setCount] = useState(1);
+  // const deleteCar = useCallback((carId: number) => {
+  //   debugger
+  //   dispatch(deleteCarTC(carId))
+  //   setCount(count + 1)
+  // }, [dispatch, count])
 
   return (
     <div className={classes.root}>
@@ -206,9 +207,9 @@ export default function Car(props: PropType) {
                       </TableCell>
                       <TableCell align="right">{row.carNumber}</TableCell>
                       <TableCell align="right">{row.engineType}</TableCell>
-                      <TableCell align="right">{row.model}
-                        <IconButton >
-                          <div onClick={ () => deleteCar(row.id)}><Delete/></div>
+                      <TableCell align="right" onClick={() => props.deleteCar(row.id)}>{row.model}
+                        <IconButton>
+                          <Delete/>
                         </IconButton>
                       </TableCell>
                     </TableRow>

@@ -3,31 +3,34 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            '& > *': {
-                margin: theme.spacing(1),
-                width: '25ch',
-            },
-        },
-    }),
+  createStyles({
+    formControl: {
+        margin: 10,
+        minWidth: 222,
+    },
+  }),
 );
 type PropsType = {
-    label: string
-    setValue: (value: string) => void
+  label: string
+  setValue: (value: string) => void
+  error: string | null
+  setError: (error: string | null) => void
 }
 export default function MyInput(props: PropsType) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const onChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const value = event.currentTarget.value;
-        props.setValue(value);
-        console.log(value);
+  const onChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    if (value.trim() != '') {
+      props.setValue(value);
+      console.log(value);
+    } else {
+      props.setError("Title is required");
     }
+  }
 
-    return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <TextField id="outlined-basic" label={props.label} variant="outlined" onChange={onChange}/>
-        </form>
-    );
+  return (
+      <TextField className={classes.formControl} id="outlined-basic" label={props.label} variant="outlined" onChange={onChange} autoComplete='on'
+                 helperText={props.error}/>
+  );
 }

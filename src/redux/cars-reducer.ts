@@ -64,7 +64,7 @@ export const deleteCarTC = (carId: number) => {
   return (dispatch: ThunkDispatch) => {
     carsApi.deleteCar(carId)
       .then((res) => {
-        dispatch(deleteCarAC(res.data.cars))
+        dispatch(deleteCarAC(carId))
       })
       .catch(error => {
         console.log(error, dispatch);
