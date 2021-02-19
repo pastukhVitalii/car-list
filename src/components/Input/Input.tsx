@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -12,14 +12,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 type PropsType = {
   label: string
+  value: string
   setValue: (value: string) => void
   error: string | null
   setError: (error: string | null) => void
 }
-export default function MyInput(props: PropsType) {
+export default React.memo(function MyInput(props: PropsType) {
   const classes = useStyles();
 
-  const onChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const onChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.currentTarget.value;
     if (value.trim() !== '') {
       props.setValue(value);
@@ -27,11 +28,11 @@ export default function MyInput(props: PropsType) {
     } else {
       props.setError("Title is required");
     }
-  }
+  },[props.setValue, props.setError])
 
   return (
-    <TextField className={classes.formControl} id="outlined-basic" label={props.label} variant="outlined"
+    <TextField className={classes.formControl} label={props.label} variant="outlined"
                onChange={onChange}
-               helperText={props.error}/>
+               helperText={props.error} value={props.value}/>
   );
-}
+})

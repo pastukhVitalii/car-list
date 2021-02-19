@@ -6,9 +6,11 @@ import Fade from '@material-ui/core/Fade';
 import {Grid, Typography} from "@material-ui/core";
 import MyInput from "../Input/Input";
 import {MySelect} from "../Select/Select";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addCarTC} from "../../redux/cars-reducer";
 import MyButton from "../Button/Button";
+import {CarType} from "../../api/api";
+import {AppStateType} from "../../redux/store";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,17 +32,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type PropsType = {
-  open: boolean
-  setOpen: (open: boolean) => void
+  openCar: boolean
+  setOpenCar: (open: boolean) => void
+  car: CarType
 }
 
-export default function MyModal(props: PropsType) {
-
+export default React.memo(function CarModal(props: PropsType) {
+  console.log('car modal');
   const classes = useStyles();
 
-  const handleClose = () => {
-    props.setOpen(false);
-  };
+  const handleClose = useCallback(() => {
+    props.setOpenCar(false);
+  }, [props.setOpenCar]);
 
   const [brand, setBrand] = useState<string>('');
   const [carNumber, setCarNumber] = useState<string>('');
@@ -51,15 +54,16 @@ export default function MyModal(props: PropsType) {
 
   let [error, setError] = useState<string | null>(null)
 
-  const addCar = useCallback(() => {
+  /*const addCar = useCallback(() => {
     dispatch(addCarTC(brand, carNumber, engineType, model));
-  }, [dispatch, brand, carNumber, engineType, model]);
+  }, [dispatch, brand, carNumber, engineType, model])*/
 
+  console.log(props.car);
   return (
     <div>
       <Modal
         className={classes.modal}
-        open={props.open}
+        open={props.openCar}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -67,7 +71,7 @@ export default function MyModal(props: PropsType) {
           timeout: 500,
         }}
       >
-        <Fade in={props.open}>
+        <Fade in={props.openCar}>
           <div className={classes.paper}>
             <Grid container justify={"space-between"} direction={"row"}>
               <Typography variant="h5">
@@ -78,20 +82,21 @@ export default function MyModal(props: PropsType) {
               </Typography>
             </Grid>
             <Grid container justify={"space-around"} direction={"column"} wrap={"wrap"}>
-              <MyInput label={'Brand'} value={brand} setValue={setBrand} setError={setError} error={error}/>
-              <MyInput label={'Car Number'} value={carNumber} setValue={setCarNumber} setError={setError} error={error}/>
+              <MyInput label={'Brand'} value={props.car.brand} setValue={setBrand} setError={setError} error={error}/>
+              <MyInput label={'Car Number'} value={props.car.carNumber} setValue={setCarNumber} setError={setError}
+                       error={error}/>
             </Grid>
             <Grid container justify={"center"} direction={"column"} wrap={"wrap"}>
-              <MySelect label={'Engine Type'} filterItems={['FUEL', 'GAS', 'HYBRID']} value={engineType} setValue={setEngineType}/>
-              <MyInput label={'Model'} value={model} setValue={setModel} setError={setError} error={error}/>
+              <MySelect label={'Engine Type'} filterItems={['FUEL', 'GAS', 'HYBRID']} value={props.car.engineType} setValue={setEngineType}/>
+              <MyInput label={'Model'} value={props.car.model} setValue={setModel} setError={setError} error={error}/>
             </Grid>
             <Grid container justify={"flex-end"} direction={"row"} wrap={"wrap"}>
               <MyButton label={'cancel'} onClick={handleClose} disabled={false}/>
-              <MyButton label={'ok'} onClick={addCar} disabled={!brand && !carNumber && !engineType && !model}/>
+              <MyButton label={'edit'} onClick={() => alert()} disabled={!brand && !carNumber && !engineType && !model}/>
             </Grid>
           </div>
         </Fade>
       </Modal>
     </div>
   );
-}
+})

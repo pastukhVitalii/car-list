@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +12,9 @@ import Paper from '@material-ui/core/Paper';
 import {CarType} from "../../api/api";
 import {IconButton} from '@material-ui/core';
 import {Delete} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import {setCarTC} from "../../redux/cars-reducer";
+import CarModal from '../Modal/CarModal';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,7 +78,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -129,91 +131,117 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+type MyTableRowType = {
+  row: CarType
+  deleteCar: (carId: number) => void
+  labelId: string
+}
+
+function MyTableRow(props: MyTableRowType) {
+
+  const dispatch = useDispatch();
+
+  const [openCar, setOpenCar] = React.useState(false);
+
+  const setCar = useCallback((carId: number) => {
+    dispatch(setCarTC(carId));
+    setOpenCar(true);
+  }, [setOpenCar])
+
+  return (
+    <>
+      <CarModal key={props.row.id} car={props.row} setOpenCar={setOpenCar} openCar={openCar}/>
+      <TableRow
+        hover
+        tabIndex={-1}
+        key={props.row.id}
+      >
+        <TableCell padding="checkbox">
+        </TableCell>
+        <TableCell component="th" id={props.labelId} scope="row" padding="none"
+                   onClick={() => setCar(props.row.id)}>
+          {props.row.brand}
+        </TableCell>
+        <TableCell align="right">{props.row.carNumber}</TableCell>
+        <TableCell align="right">{props.row.engineType}</TableCell>
+        <TableCell align="right" onClick={() => props.deleteCar(props.row.id)}>{props.row.model}
+          <IconButton>
+            <Delete/>
+          </IconButton>
+        </TableCell>
+      </TableRow></>
+  )
+}
+
 type PropType = {
   cars: Array<CarType>
   deleteCar: (carId: number) => void
 }
 
-export default function Car(props: PropType) {
+export default React.memo(function Car(props: PropType) {
 
-  const rows = props.cars;
+    const rows = props.cars;
 
-  const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof CarType>('model');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const classes = useStyles();
+    const [order, setOrder] = React.useState<Order>('asc');
+    const [orderBy, setOrderBy] = React.useState<keyof CarType>('model');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof CarType) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof CarType) => {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    const handleChangePage = (event: unknown, newPage: number) => {
+      setPage(newPage);
+    };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
 
-  return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    return (
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {stableSort(rows, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={row.id}
-                    >
-                      <TableCell padding="checkbox">
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.brand}
-                      </TableCell>
-                      <TableCell align="right">{row.carNumber}</TableCell>
-                      <TableCell align="right">{row.engineType}</TableCell>
-                      <TableCell align="right" onClick={() => props.deleteCar(row.id)}>{row.model}
-                        <IconButton>
-                          <Delete/>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
-  );
-}
+                    return (
+                      <MyTableRow key={row.id} labelId={labelId} row={row} deleteCar={props.deleteCar}/>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Paper>
+      </div>
+    );
+  }
+)

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {CarType} from "./api/api";
 import {AppStateType} from "./redux/store";
@@ -10,7 +10,7 @@ import MyModal from "./components/Modal/Modal";
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 
-function App() {
+export default React.memo(function App() {
 
   const cars = useSelector<AppStateType, Array<CarType>>(state => state.cars.cars);
   const dispatch = useDispatch();
@@ -20,9 +20,9 @@ function App() {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, [])
   console.log(cars);
   return (
     <div className="App">
@@ -41,6 +41,4 @@ function App() {
       <Cars cars={cars}/>
     </div>
   );
-}
-
-export default App;
+})

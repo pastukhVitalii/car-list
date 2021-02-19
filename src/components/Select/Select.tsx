@@ -4,6 +4,7 @@ import {createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, The
 type PropsType = {
   label: string
   filterItems: Array<string>
+  value: string
   setValue: (value: string) => void
 }
 export const MySelect = React.memo(function (props: PropsType) {
@@ -29,7 +30,7 @@ export const MySelect = React.memo(function (props: PropsType) {
     props.setValue(event.target.value as string);
   }, [statusApi, props.setValue]);
 
-
+  console.log(props.value)
   return (
     <>
       <FormControl variant="outlined" className={classes.formControl}>
@@ -37,13 +38,13 @@ export const MySelect = React.memo(function (props: PropsType) {
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
-          value={statusApi}
+          value={props.value}
           onChange={handleChange}
           label={props.label}
           required
         >
-          <MenuItem value="">
-            <em>None</em>
+          <MenuItem value={props.value}>
+            <em>{props.value}</em>
           </MenuItem>
           {useMemo(() => {
             return props.filterItems.map(f => {

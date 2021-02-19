@@ -23,6 +23,12 @@ export const carsReducer = (state: ResCarsType = initialState, action: ActionsTy
         ...state,
         cars: state.cars.filter(c => c.id !== action.carId)
       }
+    /*case 'SET-CAR':
+      return state*/
+    /*{
+        ...state,
+        cars: state.cars.filter(c => c.id === action.carId)
+      }*/
     default:
       return state
   }
@@ -33,6 +39,7 @@ export const carsReducer = (state: ResCarsType = initialState, action: ActionsTy
 export const setCarsAC = (cars: Array<CarType>) => ({type: 'SET-CARS', cars: cars} as const);
 export const addCarAC = (car: CarType) => ({type: 'ADD-CAR', car} as const);
 export const deleteCarAC = (carId: number) => ({type: 'DELETE-CAR', carId} as const);
+export const setCarAC = (carId: number) => ({type: 'SET-CAR', carId} as const);
 
 // thunks
 
@@ -71,11 +78,23 @@ export const deleteCarTC = (carId: number) => {
       })
   }
 }
+export const setCarTC = (carId: number) => {
+  return (dispatch: ThunkDispatch) => {
+    carsApi.getCar(carId)
+      .then((res) => {
+        dispatch(setCarAC(carId))
+      })
+      .catch(error => {
+        console.log(error, dispatch);
+      })
+  }
+}
 // types
 
 export type SetCarsActionType = ReturnType<typeof setCarsAC>;
 export type AddCarActionType = ReturnType<typeof addCarAC>;
 export type DeleteCarActionType = ReturnType<typeof deleteCarAC>;
-type ActionsType = SetCarsActionType | AddCarActionType | DeleteCarActionType;
+export type SetCarActionType = ReturnType<typeof setCarAC>;
+type ActionsType = SetCarsActionType | AddCarActionType | DeleteCarActionType | SetCarActionType;
 
 type ThunkDispatch = Dispatch<ActionsType>

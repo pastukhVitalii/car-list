@@ -21,6 +21,9 @@ export const carsApi = {
   },
   deleteCar(carId: number) {
     return instance.delete(`/api/car/${carId}`)
+  },
+  getCar(carId: number) {
+    return instance.get(`/api/car/${carId}`)
   }
 }
 
