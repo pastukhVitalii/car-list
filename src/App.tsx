@@ -10,7 +10,7 @@ import MyModal from "./components/Modal/Modal";
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import {Route} from 'react-router-dom';
-import {CarId} from "./CarId";
+import {CarProfile} from "./components/CarProfile/CarProfile";
 
 function App() {
 
@@ -45,7 +45,7 @@ function App() {
       <Route exact path={'/'} render={() =>
         <Cars cars={cars}/>}
       />
-      <Route path='/car/:carId' render={() =><CarId cars={cars}/> }/>
+      <Route path='/car/:carId' render={() =><CarProfile cars={cars}/> }/>
     </div>
   );
 }

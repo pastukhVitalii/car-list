@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
 import {carsApi, CarType, ResCarsType} from "../api/api";
 
-type initialStateType = {
+export type initialStateType = {
   cars: Array<CarType>
 }
 
@@ -23,6 +23,7 @@ export const carsReducer = (state: ResCarsType = initialState, action: ActionsTy
         ...state,
         cars: state.cars.filter(c => c.id !== action.carId)
       }
+
     case 'CHANGE-CARS':
       return {
         ...state,

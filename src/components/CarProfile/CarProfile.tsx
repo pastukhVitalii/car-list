@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {CarType} from "./api/api";
-import MyInput from './components/Input/Input';
-import {MySelect} from './components/Select/Select';
-import MyButton from './components/Button/Button';
+import {CarType} from "../../api/api";
+import MyInput from '../Input/Input';
+import {MySelect} from '../Select/Select';
+import MyButton from '../Button/Button';
 import {Grid, Typography} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {changeCarTC} from "./redux/cars-reducer";
+import {changeCarTC} from "../../redux/cars-reducer";
 import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,7 +32,7 @@ type RouterParams = {
 type PropsType = {
   cars: Array<CarType>
 }
-export const CarId = React.memo(function (props: PropsType) {
+export const CarProfile = React.memo(function (props: PropsType) {
   const classes = useStyles();
 
   const params = useParams<RouterParams>();
