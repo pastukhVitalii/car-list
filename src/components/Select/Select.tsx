@@ -24,13 +24,10 @@ export const MySelect = React.memo(function (props: PropsType) {
 
   const classes = useStyles();
 
-  let [statusApi, setStatus] = React.useState('');
   const handleChange = useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
-    setStatus(event.target.value as string);
     props.setValue(event.target.value as string);
-  }, [statusApi, props.setValue]);
+  }, [props]);
 
-  console.log(props.value)
   return (
     <>
       <FormControl variant="outlined" className={classes.formControl}>

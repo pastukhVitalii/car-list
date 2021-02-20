@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,7 +19,6 @@ type PropsType = {
 export default React.memo(function MyButton(props: PropsType) {
 
   const classes = useStyles();
-  console.log(props.disabled);
 
   return (
     <div className={classes.root} >

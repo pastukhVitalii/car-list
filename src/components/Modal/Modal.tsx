@@ -53,6 +53,10 @@ export default function MyModal(props: PropsType) {
 
   const addCar = useCallback(() => {
     dispatch(addCarTC(brand, carNumber, engineType, model));
+    setBrand('');
+    setCarNumber('');
+    setEngineType('');
+    setModel('');
   }, [dispatch, brand, carNumber, engineType, model]);
 
   return (
@@ -79,15 +83,17 @@ export default function MyModal(props: PropsType) {
             </Grid>
             <Grid container justify={"space-around"} direction={"column"} wrap={"wrap"}>
               <MyInput label={'Brand'} value={brand} setValue={setBrand} setError={setError} error={error}/>
-              <MyInput label={'Car Number'} value={carNumber} setValue={setCarNumber} setError={setError} error={error}/>
+              <MyInput label={'Car Number'} value={carNumber} setValue={setCarNumber} setError={setError}
+                       error={error}/>
             </Grid>
             <Grid container justify={"center"} direction={"column"} wrap={"wrap"}>
-              <MySelect label={'Engine Type'} filterItems={['FUEL', 'GAS', 'HYBRID']} value={engineType} setValue={setEngineType}/>
+              <MySelect label={'Engine Type'} filterItems={['FUEL', 'GAS', 'HYBRID']} value={engineType}
+                        setValue={setEngineType}/>
               <MyInput label={'Model'} value={model} setValue={setModel} setError={setError} error={error}/>
             </Grid>
             <Grid container justify={"flex-end"} direction={"row"} wrap={"wrap"}>
               <MyButton label={'cancel'} onClick={handleClose} disabled={false}/>
-              <MyButton label={'ok'} onClick={addCar} disabled={!brand && !carNumber && !engineType && !model}/>
+              <MyButton label={'ok'} onClick={addCar} disabled={!brand || !carNumber || !engineType || !model}/>
             </Grid>
           </div>
         </Fade>

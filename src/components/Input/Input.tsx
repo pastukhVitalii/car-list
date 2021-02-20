@@ -28,8 +28,7 @@ export default React.memo(function MyInput(props: PropsType) {
     } else {
       props.setError("Title is required");
     }
-  },[props.setValue, props.setError])
-
+  }, [props])
   return (
     <TextField className={classes.formControl} label={props.label} variant="outlined"
                onChange={onChange}

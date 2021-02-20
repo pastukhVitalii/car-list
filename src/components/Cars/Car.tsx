@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,9 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import {CarType} from "../../api/api";
 import {IconButton} from '@material-ui/core';
 import {Delete} from "@material-ui/icons";
-import {useDispatch} from "react-redux";
-import {setCarTC} from "../../redux/cars-reducer";
-import CarModal from '../Modal/CarModal';
+import {Link} from "react-router-dom";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -77,13 +75,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
+
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -109,6 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
+      padding: '0',
     },
     paper: {
       width: '100%',
@@ -123,11 +120,16 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 1,
       margin: -1,
       overflow: 'hidden',
-      padding: 0,
       position: 'absolute',
       top: 20,
       width: 1,
     },
+    link: {
+      textDecoration: 'none',
+      color: 'black',
+      padding: '32px 0',
+      width: '100%',
+    }
   }),
 );
 
@@ -138,34 +140,27 @@ type MyTableRowType = {
 }
 
 function MyTableRow(props: MyTableRowType) {
-
-  const dispatch = useDispatch();
-
-  const [openCar, setOpenCar] = React.useState(false);
-
-  const setCar = useCallback((carId: number) => {
-    dispatch(setCarTC(carId));
-    setOpenCar(true);
-  }, [setOpenCar])
-
+  const classes = useStyles();
   return (
     <>
-      <CarModal key={props.row.id} car={props.row} setOpenCar={setOpenCar} openCar={openCar}/>
       <TableRow
         hover
         tabIndex={-1}
         key={props.row.id}
+        className={classes.root}
       >
-        <TableCell padding="checkbox">
+        <TableCell component="th" id={props.labelId}>
+          <Link className={classes.link} to={'/car/' + props.row.id}>{props.row.brand}</Link>
         </TableCell>
-        <TableCell component="th" id={props.labelId} scope="row" padding="none"
-                   onClick={() => setCar(props.row.id)}>
-          {props.row.brand}
+        <TableCell align="right">
+          <Link className={classes.link} to={'/car/' + props.row.id}>{props.row.carNumber}</Link>
         </TableCell>
-        <TableCell align="right">{props.row.carNumber}</TableCell>
-        <TableCell align="right">{props.row.engineType}</TableCell>
-        <TableCell align="right" onClick={() => props.deleteCar(props.row.id)}>{props.row.model}
-          <IconButton>
+        <TableCell align="right">
+          <Link className={classes.link} to={'/car/' + props.row.id}>{props.row.engineType}</Link>
+        </TableCell>
+        <TableCell align="right">
+          <Link className={classes.link} to={'/car/' + props.row.id}>{props.row.model}</Link>
+          <IconButton onClick={() => props.deleteCar(props.row.id)}>
             <Delete/>
           </IconButton>
         </TableCell>

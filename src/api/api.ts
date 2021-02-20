@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'https://test-backend.esverito.com',
+  baseURL: 'https://test-backend.esverito.com/api',
   // ...settings
 })
 
@@ -9,10 +9,10 @@ const instance = axios.create({
 export const carsApi = {
 
   getCars() {
-    return instance.get<ResCarsType>(`/api/car`);
+    return instance.get<ResCarsType>(`/car`);
   },
   addCar(brand: string, carNumber: string, engineType: string, model: string) {
-    return instance.post<ResCarType>(`/api/car`, {
+    return instance.post<ResCarType>(`/car`, {
       brand: brand,
       carNumber: carNumber,
       engineType: engineType,
@@ -20,10 +20,15 @@ export const carsApi = {
     });
   },
   deleteCar(carId: number) {
-    return instance.delete(`/api/car/${carId}`)
+    return instance.delete(`/car/${carId}`)
   },
-  getCar(carId: number) {
-    return instance.get(`/api/car/${carId}`)
+  changeCar(carId: number, brand: string, carNumber: string, engineType: string, model: string) {
+    return instance.put<ResCarType>(`/car/${carId}`, {
+      brand: brand,
+      carNumber: carNumber,
+      engineType: engineType,
+      model: model
+    })
   }
 }
 

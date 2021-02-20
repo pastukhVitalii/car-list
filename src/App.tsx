@@ -9,6 +9,8 @@ import MyButton from "./components/Button/Button";
 import MyModal from "./components/Modal/Modal";
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
+import {Route} from 'react-router-dom';
+import {CarId} from "./CarId";
 
 export default React.memo(function App() {
 
@@ -24,6 +26,8 @@ export default React.memo(function App() {
     setOpen(true);
   }, [])
   console.log(cars);
+
+
   return (
     <div className="App">
       <AppBar position="static">
@@ -38,7 +42,10 @@ export default React.memo(function App() {
       </AppBar>
       <MyButton label={'Add car'} onClick={handleOpen} disabled={false}/>
       <MyModal open={open} setOpen={setOpen}/>
-      <Cars cars={cars}/>
+      <Route exact path={'/'} render={() =>
+        <Cars cars={cars}/>}
+      />
+      <Route path='/car/:carId' render={() =><CarId cars={cars}/> }/>
     </div>
   );
 })
