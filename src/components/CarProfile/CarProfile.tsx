@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 2, 2),
       display: 'flex',
       flexDirection: 'column',
+      width: '50%'
     },
   }),
 );
@@ -52,9 +53,9 @@ export const CarProfile = React.memo(function (props: PropsType) {
     dispatch(changeCarTC(Number(params.carId), brand, carNumber, engineType, model));
     history.push('/');
   }, [dispatch, history, params.carId, brand, carNumber, engineType, model])
-  console.log(car);
+
   return (
-    <div>
+    <div className={classes.modal}>
       <div className={classes.paper}>
         <Grid container justify={"space-between"} direction={"row"}>
           <Typography variant="h5">
