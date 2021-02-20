@@ -14,11 +14,13 @@ export const Cars = React.memo((props: PropType) => {
 
   const deleteCar = useCallback((carId: number) => {
     dispatch(deleteCarTC(carId))
-  }, [dispatch])
+  },[dispatch] )
 
   return (
     <div>
-      <Car cars={props.cars} deleteCar={deleteCar}/>
+      <div>
+        <Car cars={props.cars} deleteCar={deleteCar}/>
+      </div>
     </div>
   );
 });

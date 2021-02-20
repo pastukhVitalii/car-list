@@ -16,7 +16,7 @@ type PropsType = {
   onClick: () => void
   disabled: boolean
 }
-export default React.memo(function MyButton(props: PropsType) {
+export default function MyButton(props: PropsType) {
 
   const classes = useStyles();
 
@@ -27,4 +27,4 @@ export default React.memo(function MyButton(props: PropsType) {
       </Button>
     </div>
   );
-})
+}

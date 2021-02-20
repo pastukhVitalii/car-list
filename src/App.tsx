@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {CarType} from "./api/api";
 import {AppStateType} from "./redux/store";
@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {Route} from 'react-router-dom';
 import {CarId} from "./CarId";
 
-export default React.memo(function App() {
+function App() {
 
   const cars = useSelector<AppStateType, Array<CarType>>(state => state.cars.cars);
   const dispatch = useDispatch();
@@ -22,9 +22,9 @@ export default React.memo(function App() {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = useCallback(() => {
+  const handleOpen = () => {
     setOpen(true);
-  }, [])
+  };
   console.log(cars);
 
 
@@ -48,4 +48,6 @@ export default React.memo(function App() {
       <Route path='/car/:carId' render={() =><CarId cars={cars}/> }/>
     </div>
   );
-})
+}
+
+export default App;
